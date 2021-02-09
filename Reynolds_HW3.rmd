@@ -91,7 +91,13 @@ garden_harvest %>%
 ```{r}
 garden_harvest %>% 
   group_by(variety, vegetable) %>% 
-  summarize(total_variety_wtlbs = (sum(weight)* 0.00220462))
+  summarize(total_variety_wt_lbs = (sum(weight)* 0.00220462))
+  
+garden_harvest %>% 
+  left_join(garden_planting,
+            by = c("vegetable", "variety")) %>% 
+  group_by(variety, vegetable, plot) %>% 
+  summarize(total_variety_wt_lbs = (sum(weight)* 0.00220462))
 ```
 
   3. I would like to understand how much money I "saved" by gardening, for each vegetable type. Describe how I could use the `garden_harvest` and `garden_spending` datasets, along with data from somewhere like [this](https://products.wholefoodsmarket.com/search?sort=relevance&store=10542) to answer this question. You can answer this in words, referencing various join functions. You don't need R code but could provide some if it's helpful.
@@ -103,16 +109,18 @@ garden_harvest %>%
 garden_harvest %>% 
   filter(vegetable == "tomatoes") %>% 
   group_by(variety) %>% 
-  arrange(date) %>% 
-  slice(1) %>% 
-  ungroup() %>% 
-  select(date, variety, weight) %>%
-  arrange(weight)
+  summarize(first_harvest = min(date), 
+            tot_wt = (sum(weight)*0.00220462)) %>% 
+  arrange(first_harvest)
 
-# WHAT AM I GRAPHING-- QUESTION MAKES NO SENSE
-  ggplot(aes(y = variety, x = weight)) +
+garden_harvest %>% 
+  filter(vegetable == "tomatoes") %>% 
+  group_by(variety) %>% 
+  summarize(first_harvest = min(date), 
+            tot_wt = (sum(weight)*0.00220462)) %>% 
+  ggplot(aes(y = fct_reorder(variety, first_harvest, min), x = tot_wt)) +
   geom_col()
-
+  
 ```
 
   5. In the `garden_harvest` data, create two new variables: one that makes the varieties lowercase and another that finds the length of the variety name. Arrange the data by vegetable and length of variety name (smallest to largest), with one row for each vegetable variety. HINT: use `str_to_lower()`, `str_length()`, and `distinct()`.
@@ -136,7 +144,7 @@ garden_harvest %>%
 ```{r}
 garden_harvest %>% 
   distinct(variety, .keep_all = TRUE) %>% 
-  mutate(has_er_ar = str_detect(variety, "er|ar"))
+  mutate(has_er_ar = str_detect(variety, "er|ar")) 
 
 ```
 
@@ -163,7 +171,7 @@ Here is the code to read in the data. We do this a little differently than usual
 
 ```{r cache=TRUE}
 data_site <- 
-  "https://www.macalester.edu/~dshuman1/data/112/2014-Q4-Trips-History-Data-Small.rds" 
+  "https://www.macalester.edu/~dshuman1/data/112/2014-Q4-Trips-History-Data.rds" 
 Trips <- readRDS(gzcon(url(data_site)))
 Stations<-read_csv("http://www.macalester.edu/~dshuman1/data/112/DC-Stations.csv")
 ```
@@ -262,6 +270,15 @@ Trips %>%
   14. Change the graph from the previous problem to facet on `client` and fill with `weekday`. What information does this graph tell you that the previous didn't? Is one graph better than the other?
   
 ```{r}
+Trips %>% 
+  mutate(weekday = wday(sdate, label = TRUE), 
+         hour = hour(sdate), 
+         minute = minute(sdate), 
+         time = hour + (minute/60), 
+         weekend = ifelse(weekday > 5, "Weekend", "Weekday")) %>% 
+  ggplot(aes(x = time)) +
+  geom_density(aes(fill = weekday, alpha = .5)) +
+  facet_wrap(vars(client))
 
 ```
   
@@ -270,13 +287,33 @@ Trips %>%
   15. Use the latitude and longitude variables in `Stations` to make a visualization of the total number of departures from each station in the `Trips` data. Use either color or size to show the variation in number of departures. We will improve this plot next week when we learn about maps!
   
 ```{r}
+Trips %>% 
+  group_by(sstation) %>% 
+  summarize(n_departures = n()) %>% 
+  arrange(desc(n_departures)) %>% 
+  left_join(Stations, 
+            by = c("sstation"="name")) %>% 
+  ggplot(aes(y = lat, x = long, color = n_departures)) +
+  geom_point() + 
+  scale_color_gradient(low="blue", high="red")
 
 ```
   
   16. Only 14.4% of the trips in our data are carried out by casual users. Create a plot that shows which area(s) have stations with a much higher percentage of departures by casual users. What patterns do you notice? (Again, we'll improve this next week when we learn about maps).
   
 ```{r}
-
+Trips %>% 
+  group_by(sstation) %>%
+  mutate(casual = client == "Casual", 
+         registered = client == "Registered") %>% 
+  group_by(sstation) %>% 
+  summarize(prop_casual = sum(casual)/(sum(registered) + sum(casual))) %>% 
+  arrange(desc(prop_casual)) %>% 
+  left_join(Stations, 
+            by = c("sstation"="name")) %>% 
+  ggplot(aes(y = lat, x = long, color = prop_casual)) +
+  geom_point() + 
+  scale_color_gradient(low="blue", high="red")
 ```
   
 ### Spatiotemporal patterns
@@ -284,16 +321,47 @@ Trips %>%
   17. Make a table with the ten station-date combinations (e.g., 14th & V St., 2014-10-14) with the highest number of departures, sorted from most departures to fewest. Save this to a new dataset and print out the dataset. Hint: `as_date(sdate)` converts `sdate` from date-time format to date format. 
   
 ```{r}
+TopTenSD <- Trips %>% 
+  mutate(date = as_date(sdate)) %>% 
+  group_by(date, sstation) %>% 
+  count() %>% 
+  arrange(desc(n)) %>% 
+  head(10)
 
+TopTenSD
+  
+ 
 ```
   
   18. Use a join operation to make a table with only those trips whose departures match those top ten station-date combinations from the previous part.
   
 ```{r}
+New_Trip <- Trips %>% 
+  mutate(sdate = as_date(sdate))
+  
+TopTenSD %>% 
+  select(date, sstation) %>% 
+  inner_join(New_Trip, 
+             by = c("date" = "sdate", "sstation"))
 
 ```
   
   19. Build on the code from the previous problem (ie. copy that code below and then %>% into the next step.) and group the trips by client type and day of the week (use the name, not the number). Find the proportion of trips by day within each client type (ie. the proportions for all 7 days within each client type add up to 1). Display your results so day of week is a column and there is a column for each client type. Interpret your results.
+  
+```{r}
+TopTenSD %>% 
+  select(date, sstation) %>% 
+  inner_join(New_Trip, 
+             by = c("date" = "sdate", "sstation")) %>% 
+  mutate(weekday = wday(date, label = TRUE), 
+         casual = client == "Casual", 
+         registered = client == "Registered") %>%
+  group_by(weekday) %>% 
+  summarize(percent_casual = sum(casual/(sum(casual)+sum(registered))), 
+           percent_registered = sum(registered)/(sum(casual)+sum(registered)))
+
+```
+  
 
 **DID YOU REMEMBER TO GO BACK AND CHANGE THIS SET OF EXERCISES TO THE LARGER DATASET? IF NOT, DO THAT NOW.**
 
