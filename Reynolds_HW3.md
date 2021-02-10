@@ -8,6 +8,8 @@ output:
     toc_float: TRUE
     df_print: paged
     code_download: true
+    code_folding: hide 
+    theme: yeti
 ---
 
 
@@ -16,42 +18,8 @@ output:
 
 ```r
 library(tidyverse)     # for graphing and data cleaning
-```
-
-```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
-```
-
-```
-## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-## ✓ tibble  3.0.5     ✓ dplyr   1.0.2
-## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
-## ✓ readr   1.4.0     ✓ forcats 0.5.0
-```
-
-```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-```
-
-```r
 library(gardenR)       # for Lisa's garden data
 library(lubridate)     # for date manipulation
-```
-
-```
-## 
-## Attaching package: 'lubridate'
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     date, intersect, setdiff, union
-```
-
-```r
 library(ggthemes)      # for even more plotting themes
 library(geofacet)      # for special faceting with US map layout
 theme_set(theme_minimal())       # My favorite ggplot() theme :)
@@ -70,19 +38,6 @@ data("garden_planting")
 
 # Tidy Tuesday data
 kids <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-15/kids.csv')
-```
-
-```
-## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   state = col_character(),
-##   variable = col_character(),
-##   year = col_double(),
-##   raw = col_double(),
-##   inf_adj = col_double(),
-##   inf_adj_perchild = col_double()
-## )
 ```
 
 ## Setting up on GitHub!
@@ -133,10 +88,6 @@ garden_harvest %>%
               values_from = tot_wt_dow)
 ```
 
-```
-## `summarise()` regrouping output by 'vegetable' (override with `.groups` argument)
-```
-
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["vegetable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Sat"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mon"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Tue"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Thu"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Fri"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Sun"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Wed"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"apple","2":"0.34392072","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA"},{"1":"asparagus","2":"0.04409240","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA"},{"1":"basil","2":"0.41005932","3":"0.0661386","4":"0.11023100","5":"0.02645544","6":"0.46737944","7":"NA","8":"NA"},{"1":"beans","2":"4.70906832","3":"6.5080382","4":"4.38719380","5":"3.39291018","6":"1.52559704","7":"1.91361016","8":"4.08295624"},{"1":"beets","2":"0.37919464","3":"0.6724091","4":"0.15873264","5":"11.89172028","6":"0.02425082","7":"0.32187452","8":"0.18298346"},{"1":"broccoli","2":"NA","3":"0.8201186","4":"NA","5":"NA","6":"0.16534650","7":"1.25883802","8":"0.70768302"},{"1":"carrots","2":"2.33028334","3":"0.8708249","4":"0.35273920","5":"2.67420406","6":"2.13848140","7":"2.93655384","8":"5.56225626"},{"1":"chives","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"0.01763696"},{"1":"cilantro","2":"0.03747854","3":"NA","4":"0.00440924","5":"NA","6":"0.07275246","7":"NA","8":"NA"},{"1":"corn","2":"1.31615814","3":"0.7583893","4":"0.72752460","5":"NA","6":"3.44802568","7":"1.45725382","8":"5.30211110"},{"1":"cucumbers","2":"9.64080326","3":"4.7752069","4":"10.04645334","5":"3.30693000","6":"7.42956940","7":"3.10410496","8":"5.30652034"},{"1":"edamame","2":"4.68922674","3":"NA","4":"1.40213832","5":"NA","6":"NA","7":"NA","8":"NA"},{"1":"hot peppers","2":"NA","3":"1.2588380","4":"0.14109568","5":"NA","6":"NA","7":"NA","8":"0.06834322"},{"1":"jalapeño","2":"1.50796008","3":"5.5534378","4":"0.54895038","5":"0.22487124","6":"1.29411194","7":"0.26234978","8":"0.48060716"},{"1":"kale","2":"1.49032312","3":"2.0679336","4":"0.28219136","5":"0.27998674","6":"0.38139926","7":"0.82673250","8":"0.61729360"},{"1":"kohlrabi","2":"NA","3":"NA","4":"NA","5":"0.42108242","6":"NA","7":"NA","8":"NA"},{"1":"lettuce","2":"1.31615814","3":"2.4581513","4":"0.91712192","5":"2.45153744","6":"1.80117454","7":"1.46607230","8":"1.18608556"},{"1":"onions","2":"1.91361016","3":"0.5092672","4":"0.70768302","5":"0.60186126","6":"0.07275246","7":"0.26014516","8":"NA"},{"1":"peas","2":"2.85277828","3":"4.6341112","4":"2.06793356","5":"3.39731942","6":"0.93696350","7":"2.05691046","8":"1.08026380"},{"1":"peppers","2":"1.38229674","3":"2.5264945","4":"1.44402610","5":"0.70988764","6":"0.33510224","7":"0.50265336","8":"2.44271896"},{"1":"potatoes","2":"2.80207202","3":"0.9700328","4":"NA","5":"11.85203712","6":"3.74124014","7":"NA","8":"4.57017726"},{"1":"pumpkins","2":"92.68883866","3":"30.1195184","4":"31.85675900","5":"NA","6":"NA","7":"NA","8":"NA"},{"1":"radish","2":"0.23148510","3":"0.1962112","4":"0.09479866","5":"0.14770954","6":"0.19400656","7":"0.08157094","8":"NA"},{"1":"raspberries","2":"0.53351804","3":"0.1300726","4":"0.33510224","5":"0.28880522","6":"0.57099658","7":"NA","8":"NA"},{"1":"rutabaga","2":"6.89825598","3":"NA","4":"NA","5":"NA","6":"3.57809826","7":"19.26396956","8":"NA"},{"1":"spinach","2":"0.26014516","3":"0.1477095","4":"0.49603950","5":"0.23368972","6":"0.19621118","7":"0.48722102","8":"0.21384814"},{"1":"squash","2":"56.22221924","3":"24.3345956","4":"18.46810174","5":"NA","6":"NA","7":"NA","8":"NA"},{"1":"strawberries","2":"0.16975574","3":"0.4784025","4":"NA","5":"0.08818480","6":"0.48722102","7":"0.08157094","8":"NA"},{"1":"Swiss chard","2":"0.73413846","3":"1.0736499","4":"0.07054784","5":"2.23107544","6":"0.61729360","7":"1.24781492","8":"0.90830344"},{"1":"tomatoes","2":"35.12621046","3":"11.4926841","4":"48.75076206","5":"34.51773534","6":"85.07628580","7":"75.60964752","8":"58.26590198"},{"1":"zucchini","2":"3.41495638","3":"12.1959578","4":"16.46851140","5":"34.63017096","6":"18.72163304","7":"12.23564100","8":"2.04147812"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -150,10 +101,6 @@ garden_harvest %>%
 garden_harvest %>% 
   group_by(variety, vegetable) %>% 
   summarize(total_variety_wt_lbs = (sum(weight)* 0.00220462))
-```
-
-```
-## `summarise()` regrouping output by 'variety' (override with `.groups` argument)
 ```
 
 <div data-pagedtable="false">
@@ -170,17 +117,17 @@ garden_harvest %>%
   summarize(total_variety_wt_lbs = (sum(weight)* 0.00220462))
 ```
 
-```
-## `summarise()` regrouping output by 'variety', 'vegetable' (override with `.groups` argument)
-```
-
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["variety"],"name":[1],"type":["chr"],"align":["left"]},{"label":["vegetable"],"name":[2],"type":["chr"],"align":["left"]},{"label":["plot"],"name":[3],"type":["chr"],"align":["left"]},{"label":["total_variety_wt_lbs"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Amish Paste","2":"tomatoes","3":"J","4":"65.67342518"},{"1":"Amish Paste","2":"tomatoes","3":"N","4":"65.67342518"},{"1":"asparagus","2":"asparagus","3":"NA","4":"0.04409240"},{"1":"Better Boy","2":"tomatoes","3":"J","4":"34.00846812"},{"1":"Better Boy","2":"tomatoes","3":"N","4":"34.00846812"},{"1":"Big Beef","2":"tomatoes","3":"N","4":"24.99377694"},{"1":"Black Krim","2":"tomatoes","3":"N","4":"15.80712540"},{"1":"Blue (saved)","2":"squash","3":"A","4":"41.52401770"},{"1":"Blue (saved)","2":"squash","3":"B","4":"41.52401770"},{"1":"Bolero","2":"carrots","3":"H","4":"8.29157582"},{"1":"Bolero","2":"carrots","3":"L","4":"8.29157582"},{"1":"Bonny Best","2":"tomatoes","3":"J","4":"24.92322910"},{"1":"Brandywine","2":"tomatoes","3":"J","4":"15.64618814"},{"1":"Bush Bush Slender","2":"beans","3":"D","4":"22.12997556"},{"1":"Bush Bush Slender","2":"beans","3":"M","4":"22.12997556"},{"1":"Catalina","2":"spinach","3":"E","4":"2.03486426"},{"1":"Catalina","2":"spinach","3":"H","4":"2.03486426"},{"1":"Cherokee Purple","2":"tomatoes","3":"J","4":"15.71232674"},{"1":"Chinese Red Noodle","2":"beans","3":"K","4":"0.78484472"},{"1":"Chinese Red Noodle","2":"beans","3":"L","4":"0.78484472"},{"1":"cilantro","2":"cilantro","3":"E","4":"0.11464024"},{"1":"cilantro","2":"cilantro","3":"potD","4":"0.11464024"},{"1":"Cinderella's Carraige","2":"pumpkins","3":"B","4":"32.87308882"},{"1":"Classic Slenderette","2":"beans","3":"E","4":"3.60455370"},{"1":"Crispy Colors Duo","2":"kohlrabi","3":"front","4":"0.42108242"},{"1":"delicata","2":"squash","3":"K","4":"10.49840044"},{"1":"Delicious Duo","2":"onions","3":"P","4":"0.75398004"},{"1":"Dorinny Sweet","2":"corn","3":"A","4":"11.40670388"},{"1":"Dragon","2":"carrots","3":"H","4":"4.10500244"},{"1":"Dragon","2":"carrots","3":"L","4":"4.10500244"},{"1":"edamame","2":"edamame","3":"O","4":"6.09136506"},{"1":"Farmer's Market Blend","2":"lettuce","3":"C","4":"3.80296950"},{"1":"Farmer's Market Blend","2":"lettuce","3":"L","4":"3.80296950"},{"1":"Garden Party Mix","2":"radish","3":"C","4":"0.94578198"},{"1":"Garden Party Mix","2":"radish","3":"G","4":"0.94578198"},{"1":"Garden Party Mix","2":"radish","3":"H","4":"0.94578198"},{"1":"giant","2":"jalapeño","3":"L","4":"9.87228836"},{"1":"Golden Bantam","2":"corn","3":"B","4":"1.60275874"},{"1":"Gourmet Golden","2":"beets","3":"H","4":"7.02171470"},{"1":"grape","2":"tomatoes","3":"O","4":"32.39468628"},{"1":"green","2":"peppers","3":"K","4":"5.69232884"},{"1":"green","2":"peppers","3":"O","4":"5.69232884"},{"1":"greens","2":"carrots","3":"NA","4":"0.37258078"},{"1":"Heirloom Lacinto","2":"kale","3":"front","4":"5.94586014"},{"1":"Heirloom Lacinto","2":"kale","3":"P","4":"5.94586014"},{"1":"Improved Helenor","2":"rutabaga","3":"NA","4":"29.74032380"},{"1":"Isle of Naxos","2":"basil","3":"potB","4":"1.08026380"},{"1":"Jet Star","2":"tomatoes","3":"N","4":"15.02448530"},{"1":"King Midas","2":"carrots","3":"H","4":"4.09618396"},{"1":"King Midas","2":"carrots","3":"L","4":"4.09618396"},{"1":"leaves","2":"beets","3":"NA","4":"0.22266662"},{"1":"Lettuce Mixture","2":"lettuce","3":"G","4":"4.74875148"},{"1":"Long Keeping Rainbow","2":"onions","3":"H","4":"3.31133924"},{"1":"Magnolia Blossom","2":"peas","3":"B","4":"7.45822946"},{"1":"Main Crop Bravado","2":"broccoli","3":"D","4":"2.13186754"},{"1":"Main Crop Bravado","2":"broccoli","3":"I","4":"2.13186754"},{"1":"Mortgage Lifter","2":"tomatoes","3":"J","4":"26.32536742"},{"1":"Mortgage Lifter","2":"tomatoes","3":"N","4":"26.32536742"},{"1":"mustard greens","2":"lettuce","3":"NA","4":"0.05070626"},{"1":"Neon Glow","2":"Swiss chard","3":"M","4":"6.88282364"},{"1":"New England Sugar","2":"pumpkins","3":"K","4":"44.85960776"},{"1":"Old German","2":"tomatoes","3":"J","4":"26.71778978"},{"1":"perrenial","2":"chives","3":"NA","4":"0.01763696"},{"1":"perrenial","2":"raspberries","3":"NA","4":"1.85849466"},{"1":"perrenial","2":"strawberries","3":"NA","4":"1.30513504"},{"1":"pickling","2":"cucumbers","3":"L","4":"43.60958822"},{"1":"purple","2":"potatoes","3":"D","4":"3.00930630"},{"1":"red","2":"potatoes","3":"I","4":"4.43349082"},{"1":"Red Kuri","2":"squash","3":"A","4":"22.73183682"},{"1":"Red Kuri","2":"squash","3":"B","4":"22.73183682"},{"1":"Red Kuri","2":"squash","3":"side","4":"22.73183682"},{"1":"reseed","2":"lettuce","3":"NA","4":"0.09920790"},{"1":"Romanesco","2":"zucchini","3":"D","4":"99.70834874"},{"1":"Russet","2":"potatoes","3":"D","4":"9.09185288"},{"1":"saved","2":"pumpkins","3":"B","4":"76.93241952"},{"1":"Super Sugar Snap","2":"peas","3":"A","4":"9.56805080"},{"1":"Sweet Merlin","2":"beets","3":"H","4":"6.38678414"},{"1":"Tatsoi","2":"lettuce","3":"P","4":"2.89466606"},{"1":"thai","2":"hot peppers","3":"potB","4":"0.14770954"},{"1":"unknown","2":"apple","3":"NA","4":"0.34392072"},{"1":"variety","2":"hot peppers","3":"potC","4":"1.32056738"},{"1":"variety","2":"peppers","3":"potA","4":"7.30170144"},{"1":"variety","2":"peppers","3":"potD","4":"3.65085072"},{"1":"volunteers","2":"tomatoes","3":"front","4":"51.61235882"},{"1":"volunteers","2":"tomatoes","3":"J","4":"51.61235882"},{"1":"volunteers","2":"tomatoes","3":"N","4":"51.61235882"},{"1":"volunteers","2":"tomatoes","3":"O","4":"51.61235882"},{"1":"Waltham Butternut","2":"squash","3":"A","4":"24.27066158"},{"1":"Waltham Butternut","2":"squash","3":"K","4":"24.27066158"},{"1":"yellow","2":"potatoes","3":"I","4":"14.80181868"},{"1":"Yod Fah","2":"broccoli","3":"P","4":"0.82011864"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 
+**Discussion:** The issue is that there are certain varieties of vegetables that have been planted in multiple plots, or were not recorded in a plot. As such, we see in the table that the instances in which a variety has been planted in multiple plots will appear as many times as places it has been planted. In these instances, the total harvest weight of that variety will appear as many times as places it has been planted, which might lead someone to believe that the total weight is multipilcatively more than it actually is. To fix this issue, it likely would've required the data entry to differentiate the varieties by the plot they're in if the variety was planted in more than one plot. This would've allowed the grouping to differentiate between the plots and we could've calculated totals by variety and plot. 
+
   3. I would like to understand how much money I "saved" by gardening, for each vegetable type. Describe how I could use the `garden_harvest` and `garden_spending` datasets, along with data from somewhere like [this](https://products.wholefoodsmarket.com/search?sort=relevance&store=10542) to answer this question. You can answer this in words, referencing various join functions. You don't need R code but could provide some if it's helpful.
+
+**Discussion:** To gain an understanding of how much money you saved by gardening, it would be helpful to understand how much the total weight of each vegetable and variety would cost at a grocery store. Using a grocery store's website, you could calculate the total cost by multiplying their price per lb by the number of lbs you harvested in your garden. You could create a dataset with the grocery store prices and join that data set using a left_join() by vegetable/variety (assuming that you could find all varieties and vegetables at the grocery store). You could create a further complete dataset to help understand your savings by left joining that dataset with the garden_spending dataset. You could then, using all this information, create a variable that calculates the cost for each vegetable/variety at a grocery store, and then create another variable that shows the savings by subtracting your initial investment in the seeds/plant from the total grocery store cost to show an estimated savings. 
 
   4. Subset the data to tomatoes. Reorder the tomato varieties from smallest to largest first harvest date. Create a barplot of total harvest in pounds for each variety, in the new order.
 
@@ -192,10 +139,6 @@ garden_harvest %>%
   summarize(first_harvest = min(date), 
             tot_wt = (sum(weight)*0.00220462)) %>% 
   arrange(first_harvest)
-```
-
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
 ```
 
 <div data-pagedtable="false">
@@ -211,11 +154,10 @@ garden_harvest %>%
   summarize(first_harvest = min(date), 
             tot_wt = (sum(weight)*0.00220462)) %>% 
   ggplot(aes(y = fct_reorder(variety, first_harvest, min), x = tot_wt)) +
-  geom_col()
-```
-
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
+  geom_col() +
+  labs(title = "Total Tomato Harvest in lbs, Sorted by Weight of First Harvest", 
+       x = "", 
+       y = "")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
@@ -234,10 +176,6 @@ garden_harvest %>%
   summarize(vegetable, 
             variety_lower, 
             variety_length)
-```
-
-```
-## `summarise()` regrouping output by 'vegetable' (override with `.groups` argument)
 ```
 
 <div data-pagedtable="false">
@@ -290,18 +228,6 @@ Trips <- readRDS(gzcon(url(data_site)))
 Stations<-read_csv("http://www.macalester.edu/~dshuman1/data/112/DC-Stations.csv")
 ```
 
-```
-## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   name = col_character(),
-##   lat = col_double(),
-##   long = col_double(),
-##   nbBikes = col_double(),
-##   nbEmptyDocks = col_double()
-## )
-```
-
 **NOTE:** The `Trips` data table is a random subset of 10,000 trips from the full quarterly data. Start with this small data table to develop your analysis commands. **When you have this working well, you should access the full data set of more than 600,000 events by removing `-Small` from the name of the `data_site`.**
 
 ### Temporal patterns
@@ -314,7 +240,10 @@ It's natural to expect that bikes are rented more at some times of day, some day
 ```r
 Trips %>% 
   ggplot(aes(x = sdate)) + 
-  geom_density()
+  geom_density() +
+  labs(title = "Distribution of Bike Rentals Between October and January 2014", 
+       x = "", 
+       y = "Density")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
@@ -328,7 +257,11 @@ Trips %>%
          minute = minute(sdate), 
          time = hour + (minute/60)) %>% 
   ggplot(aes(x = time)) +
-  geom_density()
+  geom_density() +
+  labs(title = "Distribution of Bike Rental Times", 
+       x = "Time of Day (Military Time)", 
+       y = "Density") +
+  theme_minimal()
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
@@ -340,7 +273,10 @@ Trips %>%
 Trips %>% 
   mutate(weekday = wday(sdate, label = TRUE)) %>% 
   ggplot(aes(y = weekday)) + 
-  geom_bar()
+  geom_bar() +
+  labs(title = "Distribution of Bike Rentals by Day of the Week", 
+       x = "Number of Rentals", 
+       y = "")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
@@ -356,10 +292,15 @@ Trips %>%
          time = hour + (minute/60)) %>% 
   ggplot(aes(x = time)) +
   geom_density() +
-  facet_wrap(vars(weekday))
+  facet_wrap(vars(weekday)) +
+  labs(title = "Distribution of Bike Rentals by Time of Day and Weekday", 
+       x = "Time of Day (Military Time)", 
+       y = "Density")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+  
+**Observations:** There is a distinct pattern present. On weekdays, as opposed to weekends, there are two distinct peaks in rental occurrences that coincide with the start and of the workday. These peaks are absent on the weekends where there is more of a standard, unimodal distribution that peaks a little after noon. 
   
 The variable `client` describes whether the renter is a regular user (level `Registered`) or has not joined the bike-rental organization (`Causal`). The next set of exercises investigate whether these two different categories of users show different rental behavior and how `client` interacts with the patterns you found in the previous exercises. 
 
@@ -373,8 +314,13 @@ Trips %>%
          minute = minute(sdate), 
          time = hour + (minute/60)) %>% 
   ggplot(aes(x = time)) +
-  geom_density(aes(fill = client, alpha = .5)) +
-  facet_wrap(vars(weekday))
+  geom_density(aes(fill = client), alpha = .5, color = NA) +
+  facet_wrap(vars(weekday)) +
+  labs(title = "Distribution of Bike Rentals by Time of Day and Weekday",  
+       x = "Time of Day (Military Time)", 
+       y = "Density", 
+       color = "", 
+       fill = "Client Type")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
@@ -389,11 +335,17 @@ Trips %>%
          minute = minute(sdate), 
          time = hour + (minute/60)) %>% 
   ggplot(aes(x = time)) +
-  geom_density(aes(fill = client, alpha = .5), position = position_stack()) +
-  facet_wrap(vars(weekday))
+  geom_density(aes(fill = client), alpha = .5, color = NA, position = position_stack()) +
+  facet_wrap(vars(weekday)) +
+  labs(title = "Distribution of Bike Rentals by Time of Day and Weekday",  
+       x = "Time of Day (Military Time)", 
+       y = "Density", 
+       fill = "Client Type")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+ 
+ **Discussion:** Personally, I find this format to better at telling certain aspects of the story and worse at telling other parts. For instance, I believe that stacking these plots makes it more difficult to visually separate the trends for the casual and registered riders, even despite these trends still being visible in the stacked plots. This might just be personal preference. The stacking does help, however, in gauging the relative proportions of client types among riders and we can more directly compare the proportions of riders by time and day of week in the stacked version. So, the stacked version definitely has its strengths, but that's not to say it's without its weaknesses too. For instance, I find that its less intuitive to read the stacked version. Without knowing exactly what the stacking is representing and how to read it, it's less accessible than the alternative. Ultimately, I think both are effective story telling devices and it probably depends more on individual taste and what you're used to seeing. 
   
   13. In this graph, go back to using the regular density plot (without `position = position_stack()`). Add a new variable to the dataset called `weekend` which will be "weekend" if the day is Saturday or Sunday and  "weekday" otherwise (HINT: use the `ifelse()` function and the `wday()` function from `lubridate`). Then, update the graph from the previous problem by faceting on the new `weekend` variable. 
   
@@ -406,8 +358,12 @@ Trips %>%
          time = hour + (minute/60), 
          weekend = ifelse(weekday > 5, "Weekend", "Weekday")) %>% 
   ggplot(aes(x = time)) +
-  geom_density(aes(fill = client, alpha = .5)) +
-  facet_wrap(vars(weekend))
+  geom_density(aes(fill = client), alpha = .5, color = NA) +
+  facet_wrap(vars(weekend)) + 
+   labs(title = "Weekday vs Weekend: Distribution of Bike Rentals by Time of Day",  
+       x = "Time of Day (Military Time)", 
+       y = "Density", 
+       fill = "Client Type")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
@@ -423,11 +379,17 @@ Trips %>%
          time = hour + (minute/60), 
          weekend = ifelse(weekday > 5, "Weekend", "Weekday")) %>% 
   ggplot(aes(x = time)) +
-  geom_density(aes(fill = weekday, alpha = .5)) +
-  facet_wrap(vars(client))
+  geom_density(aes(fill = weekday), alpha = .5, color = NA) +
+  facet_wrap(vars(client)) + 
+  labs(title = "Weekday vs Weekend: Distribution of Bike Rentals by Time of Day",  
+       x = "Time of Day (Military Time)", 
+       y = "Density", 
+       fill = "Client Type")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+ 
+**Discussion:** This graph supposedly helps provide more nuanced information about the specific days of the week, which was absent from the previous graph. Essentially, we can see if certain times of the day are more popular for certain days of the week and overlay them to create a tapestry of the full week. Personally, I don't believe this graph provides much better information than the previous graph, and I believe this information would be better presented in a faceted form. Perhaps if the color scheme was better I would have more affinity towards it, but its current form is, in my opinion, somewhat needless. 
   
 ### Spatial patterns
 
@@ -443,15 +405,12 @@ Trips %>%
             by = c("sstation"="name")) %>% 
   ggplot(aes(y = lat, x = long, color = n_departures)) +
   geom_point() + 
-  scale_color_gradient(low="blue", high="red")
-```
-
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
-```
-## Warning: Removed 12 rows containing missing values (geom_point).
+  scale_color_gradient(low="blue", high="red") +
+  labs(title = "Spatial Heatmap of Station Popularity", 
+       x = "Longitude", 
+       y = "Latitude", 
+       subtitle = "Total Number of Departures at Each Station", 
+       color = "Departures")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
@@ -471,18 +430,17 @@ Trips %>%
             by = c("sstation"="name")) %>% 
   ggplot(aes(y = lat, x = long, color = prop_casual)) +
   geom_point() + 
-  scale_color_gradient(low="blue", high="red")
-```
-
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
-```
-## Warning: Removed 12 rows containing missing values (geom_point).
+  scale_color_gradient(low="blue", high="red") +
+  labs(title = "Spatial Heatmap of Most Popular Stations for Casual Clients", 
+       x = "Longitude", 
+       y = "Latitude", 
+       color = "Percent Casual", 
+       subtitle = "Proportion of Total Rentals by Causal Clients at Each Station")
 ```
 
 ![](Reynolds_HW3_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+
+**Observations:** It seems that most stations are used mostly by registered clients as most points are blue or purple. There are some clusters of stations with higher percentages of casual clients in the top left corner and in the center of the main cluster around 38.9 lat. It's difficult to really denote any patterns beyond this, however. 
   
 ### Spatiotemporal patterns
 
@@ -541,34 +499,39 @@ TopTenSD %>%
            percent_registered = sum(registered)/(sum(casual)+sum(registered)))
 ```
 
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["weekday"],"name":[1],"type":["ord"],"align":["right"]},{"label":["percent_casual"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["percent_registered"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Sun","2":"0.83899557","3":"0.1610044"},{"1":"Mon","2":"0.09275362","3":"0.9072464"},{"1":"Tue","2":"0.08108108","3":"0.9189189"},{"1":"Wed","2":"0.05279503","3":"0.9472050"},{"1":"Thu","2":"0.06505295","3":"0.9349470"},{"1":"Sat","2":"0.82172702","3":"0.1782730"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
   
+**Interpretation:** From the table above, we can see that the vast, vast majority of bike rentals during the weekdays are by registered clients. In fact, registered clients make up over 90% of all rentals every day of the work week. This pattern nearly completely flips, however, on the weekends. On Sat. and Sun., over 80% of all rentals are by casual clients. This makes sense as people who are using the bikes for commuting to work would be more likely to become registered clients, whereas people who are using the bikes on the weekends are likely tourists or people who don't require the bikes as frequently. 
 
-**DID YOU REMEMBER TO GO BACK AND CHANGE THIS SET OF EXERCISES TO THE LARGER DATASET? IF NOT, DO THAT NOW.**
 
 ## GitHub link
 
   20. Below, provide a link to your GitHub page with this set of Weekly Exercises. Specifically, if the name of the file is 03_exercises.Rmd, provide a link to the 03_exercises.md file, which is the one that will be most readable on GitHub.
+  
+**Link:** https://github.com/greynolds1121/Reynolds_Week_3_HW/blob/main/Reynolds_HW3.md
 
 ## Challenge problem! 
 
 This problem uses the data from the Tidy Tuesday competition this week, `kids`. If you need to refresh your memory on the data, read about it [here](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-15/readme.md). 
 
   21. In this exercise, you are going to try to replicate the graph below, created by Georgios Karamanis. I'm sure you can find the exact code on GitHub somewhere, but **DON'T DO THAT!** You will only be graded for putting an effort into this problem. So, give it a try and see how far you can get without doing too much googling. HINT: use `facet_geo()`. The graphic won't load below since it came from a location on my computer. So, you'll have to reference the original html on the moodle page to see it.
-  
+
 
 
 ```r
-# uncomment this and take out of r chunk... weird knitting happened 
-#![](kids_data_karamanis.jpeg)
+kids %>% 
+  filter(variable == "lib") %>% 
+  group_by(state, year) %>% 
+  summarize(variable, 
+            spending = inf_adj_perchild) %>% 
+  ggplot(aes(x = year, y= spending)) + 
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_geo(vars(state), scales="free") 
 ```
 
-**DID YOU REMEMBER TO UNCOMMENT THE OPTIONS AT THE TOP?**
+![](Reynolds_HW3_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+
